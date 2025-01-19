@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './Login.css'; // استيراد ملف CSS
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; // لاستيراد useNavigate
+import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // إنشاء دالة التنقل
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post('http://localhost:5000/auth/login', { email, password });
-    localStorage.setItem('token', data.token);
+    try {
+      const { data } = await axios.post("http://localhost:5000/auth/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("token", data.token);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const handleSignUpClick = () => {
+    navigate("/signup"); // الانتقال إلى صفحة التسجيل
+  };
+
+  const handleLoginClick = () => {
+    navigate("/course-creation"); // الانتقال إلى صفحة التسجيل
   };
 
   return (
@@ -29,7 +46,18 @@ const Login = () => {
         placeholder="Password"
         required
       />
-      <button type="submit">Login</button>
+      <button type="submit" onClick={handleLoginClick}>
+        Login
+      </button>
+      <br />
+      <hr />
+      <button
+        type="button"
+        className="signup-button"
+        onClick={handleSignUpClick}
+      >
+        Sign Up
+      </button>
     </form>
   );
 };

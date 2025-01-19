@@ -39,4 +39,3 @@ const CourseCreation = () => {
 };
 
 export default CourseCreation;
-
